@@ -52,7 +52,9 @@ metadata: {"pepebot":{"emoji":"🔄","requires":{},"platform":"all"}}
 6. **Use `{{variable}}` for interpolation** in args and goals.
 7. **Step outputs** are auto-stored as `{{step_name_output}}`.
 
-**IMPORTANT:** When user says "use skill X" or "with skill X", ALWAYS use a **skill step** (`"skill": "X", "goal": "..."`). Do NOT manually replicate the skill's commands via tool/exec steps. The skill step automatically loads the skill content and combines it with the goal.
+**IMPORTANT (workflow context only):** When building workflow JSON and user says "use skill X" or "with skill X", use a **skill step** (`"skill": "X", "goal": "..."`). Do NOT manually replicate the skill's commands via tool/exec steps. The skill step automatically loads the skill content and combines it with the goal.
+
+Do not interpret normal chat requests like "panggil agent", "switch agent", or "use agent" as an instruction to create/save a workflow unless the user explicitly asks for a workflow.
 
 ## Available Tools
 
@@ -242,8 +244,8 @@ ExecStart=/usr/local/bin/pepebot workflow run device_health --var device=emulato
 
 1. **Default variables**: Defined in `"variables"` field
 2. **Runtime overrides**: Passed via `workflow_execute` variables parameter or `--var` flag in CLI
-3. **Step outputs**: Auto-created as `{{step_name_output}}`
-4. **Goal results**: Auto-created as `{{step_name_goal}}`
+3. **Step outputs**: Auto-created as `{{step_name_output}}` or `{{step_name}}` (works for both tool and goal steps)
+4. **Goal raw text**: `{{step_name_goal}}` contains the original goal text, NOT the LLM output — use `{{step_name_output}}` to get the LLM-processed result
 
 ## Design Tips for Powerful Workflows
 
